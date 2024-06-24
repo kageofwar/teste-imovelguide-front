@@ -10,15 +10,16 @@
       <div class="m-5">
         <h1 class="text-[2.5vh]">Editar Corretor</h1>
       </div>
+      <div class="text-blue-400">{{ mensagemEditar }}</div>
       <div class="flex space-x-5">
         <div class="">
-          <input type="number" name="cpf" placeholder="Digite Seu CPF" class="border-2 w-[20vh]" v-model="formulario.cpf" @input="limitaInput">
+          <input type="text" name="cpf" placeholder="Digite Seu CPF" class="border-2 w-[20vh] appearance-none" v-model="formulario.cpf" maxlength="11">
           <div class="text-red-300" v-if="erroCPF">CPF deve ter 11 numeros!</div>
           <div class="text-red-300" v-if="erroCPF">CPF é obrigatório</div>
         </div>
         
         <div>
-          <input type="number" name="creci" placeholder="Digite Seu Creci" class="border-2 w-[100%]" v-model="formulario.creci">
+          <input type="text" name="creci" placeholder="Digite Seu Creci" class="border-2 w-[100%]" v-model="formulario.creci">
           <div class="text-red-300" v-if="erroCRECI">Creci deve ter no minimo 2 caracteres</div>
           <div class="text-red-300" v-if="erroCRECI">Numero do Creci é obrigatório</div>
         </div>
@@ -55,9 +56,9 @@
         <div class="">
           <p>{{ corretor.creci }}</p>
         </div>
-        <div class=" space-x-5">
-          <button class="text-red-300">Excluir</button>
-          <button class="text-blue-300">Editar</button>
+        <div class="flex space-x-5">
+          <h2 class="text-slate-300">Excluir</h2>
+          <h2 class="text-slate-300">Editar</h2>
         </div>
       </div>
     </div>
@@ -78,6 +79,7 @@
             erroCPF: false,
             erroCRECI: false,
             erroNOME: false,
+            mensagemEditar: '',
         }
     },
     methods: {
@@ -93,10 +95,13 @@
       });
 
       if(res.ok) {
-        window.location.href = '/';
+        await new Promise((res) => {setTimeout(() => res('ok'), 3000 )
+          this.mensagemEditar = 'Corretor Editado com sucesso!'
+        })
+          window.location.href = '/';
         }
       }
-      
+
       catch(err) {
         console.log(err);
       }

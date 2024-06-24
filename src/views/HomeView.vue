@@ -10,7 +10,8 @@
       <div class="m-5">
         <h1 class="text-[2.5vh]">Cadastro de Corretor</h1>
       </div>
-      <div>{{ mensagem }}</div>
+      <div class="text-green-300">{{ mensagemCadastro }}</div>
+      <div class="text-red-300">{{ mensagemExcluir }}</div>
       <div class="flex space-x-5">
         <div class="">
           <input type="text" name="cpf" placeholder="Digite Seu CPF" class="border-2 w-[20vh] appearance-none" v-model="cpf" maxlength="11">
@@ -19,7 +20,7 @@
         </div>
         
         <div>
-          <input type="number" name="creci" placeholder="Digite Seu Creci" class="border-2 w-[100%]" v-model="creci">
+          <input type="text" name="creci" placeholder="Digite Seu Creci" class="border-2 w-[100%]" v-model="creci">
           <div class="text-red-300" v-if="erroCRECI">Creci deve ter no minimo 2 caracteres</div>
           <div class="text-red-300" v-if="erroCRECI">Numero do Creci é obrigatório</div>
         </div>
@@ -76,7 +77,8 @@
             erroCPF: false,
             erroCRECI: false,
             erroNOME: false,
-            mensagem: ''
+            mensagemCadastro: '',
+            mensagemExcluir: ''
         }
     },
     methods: {
@@ -89,8 +91,9 @@
       });
 
       if(res.ok) {
-        this.mensagem = 'Cadastro Realizado!'
-        await new Promise((res,rej) => {setTimeout(() => res('ok'), 3000 )})
+        await new Promise((res) => {setTimeout(() => res('ok'), 3000 )
+          this.mensagemCadastro = 'Cadastro Realizado!'
+        })
         location.reload(); 
         }
       }
@@ -125,6 +128,13 @@
         const res = await fetch("http://127.0.0.1:8000/api/corretor/" + id, {
         method: "DELETE",
         });
+      
+        if(res.ok) {
+        await new Promise((res) => {setTimeout(() => res('ok'), 3000 )
+          this.mensagemExcluir = 'Corretor Excluido com sucesso!'
+        })
+          location.reload(); 
+        }
       }
 
       catch(err) {
